@@ -1,29 +1,31 @@
 module Ivona::Speech
   class << self
     # Helper. Gathers params for the create_speech_file method defined below.
-    def get_speech_file_params(text, voice, codec_id='mp3/22050' )
+    def get_speech_file_params(text, voice, codec_id='mp3/22050',speed = "Prosody-Rate=100", sentencebreak = "Sentence-Break=400", paragraphbreak = "Paragraph-Break=650" )
       token        = Ivona::Auth.get_token
       md5          = Ivona::GetMd5.formula(token)
       content_type = 'text/plain'
       voice_id     = voice
       codec_id     = Ivona::Config.codec_id
+      addparams    = [spped, sentencebreak,paragraphbreak]
       {  token:       token,
          md5:         md5,
          text:        text,
          contentType: content_type,
          voiceId:     voice_id,
-         codecId:     codec_id  }
+         codecId:     codec_id,
+         params:      addparams }
     end
 
     # Get a url for a speech file generated from uploaded text.
-    def create_speech_file( text, voice='en_us_salli')
-      HTTParty.post("#{BASE_URL}/speechfiles", {:body=>get_speech_file_params( text, voice)})
+    def create_speech_file( text, voice='en_us_salli', speed = "Prosody-Rate=100", sentencebreak = "Sentence-Break=400", paragraphbreak = "Paragraph-Break=650")
+      HTTParty.post("#{BASE_URL}/speechfiles", {:body=>get_speech_file_params( text, voice, speed,sentencebreak,paragraphbreak)})
     end
 
     # Get a url for a speech file generated from uploaded text and for a text file with speech 
     # marks describing the positions of the text entities in a speech file.
-    def create_speech_file_with_marks( text, voice='en_us_salli' )
-      HTTParty.post("#{BASE_URL}/speechfileswithmarks", {:body=>get_speech_file_params( text, voice )})
+    def create_speech_file_with_marks( text, voice='en_us_salli',speed = "Prosody-Rate=100", sentencebreak = "Sentence-Break=400", paragraphbreak = "Paragraph-Break=650" )
+      HTTParty.post("#{BASE_URL}/speechfileswithmarks", {:body=>get_speech_file_params( text, voice ,speed,sentencebreak, paragraphbreak)})
     end
 
     # Delete a single speech file data
