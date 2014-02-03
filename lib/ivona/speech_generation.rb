@@ -7,7 +7,7 @@ module Ivona::Speech
       content_type = 'text/plain'
       voice_id     = voice
       codec_id     = Ivona::Config.codec_id
-      addparams    = [spped, sentencebreak,paragraphbreak]
+      addparams    = [speed, sentencebreak,paragraphbreak]
       {  token:       token,
          md5:         md5,
          text:        text,
